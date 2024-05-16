@@ -1,0 +1,25 @@
+<div class="w-screen h-screen">
+  <router-outlet></router-outlet>
+  <div class="w-full flex gap-4 p-4">
+    <div class="w-6 p-3 card shadow-1">
+      <div class="flex justify-content-end">
+        <p-button [raised]="true" label="Reset Zoom" (click)="resetChart()"/>
+      </div>
+      <p-chart type="line" [data]="data" [options]="options" height="20rem" #chart name="chart" id="chart"/>
+    </div>
+    <div class="w-6 p-3 card shadow-1">
+      <div class="flex justify-content-end">
+        <p-button [raised]="true" label="Reset Zoom" (click)="resetChart1()"/>
+      </div>
+      <p-chart type="line" [data]="data1" [options]="options" height="20rem" #chart1 name="chart1" id="chart1"/>
+    </div>
+    <div class="w-6 p-3 card shadow-1">
+      <div class="flex justify-content-end">
+        <p-button [raised]="true" label="Reset Zoom" (click)="resetChart2()"/>
+      </div>
+      <p-chart type="line" [data]="data2" [options]="options" height="20rem" #chart2 name="chart2" id="chart2"/>
+    </div>
+  </div>
+</div>
+
+<p-toast />
