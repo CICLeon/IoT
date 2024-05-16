@@ -1,23 +1,59 @@
-<div class="w-screen h-screen">
+<div class="w-screen h-screen p-4">
   <router-outlet></router-outlet>
-  <div class="w-full flex gap-4 p-4">
-    <div class="w-6 p-3 card shadow-1">
-      <div class="flex justify-content-end">
-        <p-button [raised]="true" label="Reset Zoom" (click)="resetChart()"/>
+  <div class="w-full flex">
+    <div class="w-4 p-2">
+      <div class="card shadow-1">
+        <div class="flex justify-content-between align-items-center">
+          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart()"/>
+          <h2 class="text-center text-white m-0">Humidity</h2>
+          <h2 class="text-center text-white m-0">92°C</h2>
+        </div>
+        <hr>
+        <p-chart type="line" [data]="data" [options]="options" height="10rem" #chart name="chart" id="chart"/>
       </div>
-      <p-chart type="line" [data]="data" [options]="options" height="20rem" #chart name="chart" id="chart"/>
     </div>
-    <div class="w-6 p-3 card shadow-1">
-      <div class="flex justify-content-end">
-        <p-button [raised]="true" label="Reset Zoom" (click)="resetChart1()"/>
+    <div class="w-4 p-2">
+      <div class="card shadow-1">
+        <div class="flex justify-content-between align-items-center">
+          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart1()"/>
+          <h2 class="text-center text-white m-0">Humidity</h2>
+          <h2 class="text-center text-white m-0">92°C</h2>
+        </div>
+        <hr>
+        <p-chart type="line" [data]="data1" [options]="options" height="10rem" #chart1 name="chart1" id="chart1"/>
       </div>
-      <p-chart type="line" [data]="data1" [options]="options" height="20rem" #chart1 name="chart1" id="chart1"/>
     </div>
-    <div class="w-6 p-3 card shadow-1">
-      <div class="flex justify-content-end">
-        <p-button [raised]="true" label="Reset Zoom" (click)="resetChart2()"/>
+    <div class="w-4 p-2">
+      <div class="card shadow-1">
+        <div class="flex justify-content-between align-items-center">
+          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart2()"/>
+          <h2 class="text-center text-white m-0">Humidity</h2>
+          <h2 class="text-center text-white m-0">92°C</h2>
+        </div>
+        <hr>
+        <p-chart type="line" [data]="data2" [options]="options" height="10rem" #chart2 name="chart2" id="chart2"/>
       </div>
-      <p-chart type="line" [data]="data2" [options]="options" height="20rem" #chart2 name="chart2" id="chart2"/>
+    </div>
+  </div>
+  <div class="w-full flex">
+    <div class="w-4 p-2">
+      <div class="card shadow-1">
+        <div class="flex justify-content-between align-items-center">
+          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart3()"/>
+          <h2 class="text-center text-white m-0">Humidity</h2>
+          <h2 class="text-center text-white m-0">92°C</h2>
+        </div>
+        <hr>
+        <p-chart type="line" [data]="data" [options]="options" height="10rem" #chart3 name="chart3" id="chart3"/>
+      </div>
+    </div>
+    <div class="w-8 p-2">
+      <div class="card shadow-1">
+        <div class="flex justify-content-end">
+          <p-button [raised]="true" label="Reset Zoom" (click)="resetChart1()"/>
+        </div>
+        <p-chart type="line" [data]="data1" [options]="options" height="10rem" #chart1 name="chart1" id="chart1"/>
+      </div>
     </div>
   </div>
 </div>

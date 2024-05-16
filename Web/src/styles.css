@@ -2,6 +2,7 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
 
 
 * {
@@ -11,13 +12,12 @@
 body {
     margin: 0px;
     padding: 0px;
-    background-color: #F1F2F3;
+    background-color: #111521;
 }
 
 
 .card {
-    background: var(--surface-card);
-    padding: 2rem;
-    border-radius: 10px;
-    margin-bottom: 1rem;
+    background: #435464;
+    padding: 1rem;
+    border-radius: 1.5rem;
 }

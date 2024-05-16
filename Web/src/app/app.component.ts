@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, HostListener, ViewChild, inject } from '@angular/core';
 import { IDataBD, ISIATAPM25 } from './interfaces/siata';
 import { SiataService } from './services/siata.service';
 import { Chart } from 'chart.js';
@@ -17,6 +17,17 @@ import 'chartjs-adapter-moment';
 })
 export class AppComponent {
 
+    screenHeight : number = 0
+    screenWidth : number = 0
+
+    @HostListener('window:resize', ['$event'])
+    onResize(){
+        this.screenHeight = window.innerHeight;
+        this.screenWidth = window.innerWidth;
+        console.log(window.innerHeight)
+        console.log(window.innerWidth)
+    }
+
     title = 'IoT';
 
     siataService = inject(SiataService)
@@ -28,6 +39,7 @@ export class AppComponent {
     @ViewChild('chart') chart : UIChart = {} as UIChart;
     @ViewChild('chart1') chart1 : UIChart = {} as UIChart;
     @ViewChild('chart2') chart2 : UIChart = {} as UIChart;
+    @ViewChild('chart3') chart3 : UIChart = {} as UIChart;
 
     options: any;
 
@@ -40,15 +52,16 @@ export class AppComponent {
             conenction.start();
         });
         conenction.start();
+        this.onResize()
     }
 
     ngOnInit() {
         Chart.register(zoomPlugin);
         this.siataService.getSIATAPM25().then((resp: ISIATAPM25[]) => {
             resp.forEach(item => {
-                item.datos = item.datos.filter(x => x.valor > -985 && x.valor < 985).reverse().slice(0, 100)
+                item.datos = item.datos.filter(x => x.valor > -985 && x.valor < 985).reverse().slice(0, 50)
             })
-            this.data = this.getData(resp[3], '#0b5ed7')
+            this.data = this.getData(resp[3], 'white')
             this.data1 = this.getData(resp[5], '#198754')
             this.data2 = this.getData(resp[6], '#dc3545')
         })
@@ -66,15 +79,16 @@ export class AppComponent {
                 x: {
                     type: 'time',
                     ticks: {
-                        color: textColorSecondary
+                        color: 'white'
                     },
                     grid: {
-                        color: surfaceBorder
+                        color: surfaceBorder,
+                        lineWidth: 0.1
                     },
                     time: {
                         unit: 'hour',
                         displayFormats: {
-                            hour: 'yyyy/MM/DD HH:mm',
+                            hour: 'MM/DD HH:mm',
                         }
                     },
                 },
@@ -83,10 +97,11 @@ export class AppComponent {
                     display: true,
                     position: 'left',
                     ticks: {
-                        color: textColorSecondary
+                        color: 'white'
                     },
                     grid: {
-                        color: surfaceBorder
+                        color: surfaceBorder,
+                        lineWidth: 0.1,
                     }
                 },
             },
@@ -107,6 +122,7 @@ export class AppComponent {
                   }
                 },
                 legend: {
+                    display: false,
                     labels: {
                         color: textColor
                     }
@@ -162,5 +178,8 @@ export class AppComponent {
     }
     resetChart2(){
         this.chart2.chart.resetZoom();
+    }
+    resetChart3(){
+        this.chart3.chart.resetZoom();
     }
 }
