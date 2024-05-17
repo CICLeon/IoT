@@ -1,5 +1,5 @@
-import { Component, HostListener, ViewChild, inject } from '@angular/core';
-import { IDataBD, ISIATAPM25 } from './interfaces/siata';
+import { Component, HostListener, ViewChild, WritableSignal, inject, signal } from '@angular/core';
+import { IDataBD, ISIATAPM25, Product } from './interfaces/siata';
 import { SiataService } from './services/siata.service';
 import { Chart } from 'chart.js';
 import { UIChart } from 'primeng/chart';
@@ -17,31 +17,37 @@ import 'chartjs-adapter-moment';
 })
 export class AppComponent {
 
-    screenHeight : number = 0
-    screenWidth : number = 0
+    @ViewChild('chart') chart : UIChart = {} as UIChart;
+    @ViewChild('chart1') chart1 : UIChart = {} as UIChart;
+    @ViewChild('chart2') chart2 : UIChart = {} as UIChart;
+    @ViewChild('chart3') chart3 : UIChart = {} as UIChart;
+    @ViewChild('chartAux') chartAux : UIChart = {} as UIChart;
 
     @HostListener('window:resize', ['$event'])
     onResize(){
-        this.screenHeight = window.innerHeight;
-        this.screenWidth = window.innerWidth;
-        console.log(window.innerHeight)
-        console.log(window.innerWidth)
+        // this.screenHeight = window.innerHeight;
+        // this.screenWidth = window.innerWidth;
+        this.heightChart = `${Number((window.innerHeight - 160 - (47.99*2) - (2.22*2))/2).toFixed(0)}px`
     }
 
     title = 'IoT';
 
     siataService = inject(SiataService)
     messageService = inject(MessageService)
+
+    maximizeChart : WritableSignal<boolean> = signal(false)
+    dataAux : WritableSignal<any> = signal(false)
+
     data: any;
     data1: any;
     data2: any;
+    data3: any;
 
-    @ViewChild('chart') chart : UIChart = {} as UIChart;
-    @ViewChild('chart1') chart1 : UIChart = {} as UIChart;
-    @ViewChild('chart2') chart2 : UIChart = {} as UIChart;
-    @ViewChild('chart3') chart3 : UIChart = {} as UIChart;
-
+    heightChart : string = ''
     options: any;
+
+    products: Product[] = [];
+    responsiveOptions: any[] | undefined;
 
     constructor(){
         let conenction = new HubConnectionBuilder().withUrl(environment.signalR).build();
@@ -61,10 +67,15 @@ export class AppComponent {
             resp.forEach(item => {
                 item.datos = item.datos.filter(x => x.valor > -985 && x.valor < 985).reverse().slice(0, 50)
             })
-            this.data = this.getData(resp[3], 'white')
-            this.data1 = this.getData(resp[5], '#198754')
-            this.data2 = this.getData(resp[6], '#dc3545')
+            this.data = this.getData(resp[3], 'white', 'temperature', 15, 25)
+            this.data1 = this.getData(resp[9], 'white', 'humidity', 50, 70)
+            this.data2 = this.getData(resp[5], 'white', 'light', 0, 0)
+            this.data3 = this.getData(resp[6], 'white', 'proximity', 0, 0)
         })
+
+        this.siataService.getProductsSmall().then((products) => {
+            this.products = products;
+        });
 
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
@@ -104,6 +115,18 @@ export class AppComponent {
                         lineWidth: 0.1,
                     }
                 },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                        color: surfaceBorder
+                    }
+                }
             },
             plugins: {
                 zoom: {
@@ -143,22 +166,70 @@ export class AppComponent {
                 }
               }
         };
+
+        this.responsiveOptions = [
+            {
+                breakpoint: '1199px',
+                numVisible: 1,
+                numScroll: 1
+            },
+            {
+                breakpoint: '991px',
+                numVisible: 2,
+                numScroll: 1
+            },
+            {
+                breakpoint: '767px',
+                numVisible: 1,
+                numScroll: 1
+            }
+        ];
     }
 
-    getData(dataSiata: ISIATAPM25, color: string): any {
+    getData(dataSiata: ISIATAPM25, color: string, label : string, min : number, max : number): any {
         let data = {
             labels: dataSiata.datos.map(x => new Date(x.fecha)),
             datasets: [
                 {
-                    label: dataSiata.nombreCorto,
+                    label: label,
                     fill: false,
                     borderColor: color,
                     yAxisID: 'y',
                     tension: 0.4,
-                    data: dataSiata.datos.map(x => x.valor)
+                    data: dataSiata.datos.map(x => x.valor),
+                    borderWidth: 1,
+                    pointBorderWidth: 0,
+                    pointHoverBorderWidth: 1,
+                    pointRadius: 3
                 },
             ]
         };
+        if(min <  max){
+            data.datasets.push({
+                label: `Limit Min ${label}`,
+                fill: false,
+                borderColor: 'red',
+                yAxisID: 'y',
+                tension: 0.4,
+                data: dataSiata.datos.map(x => min),
+                borderWidth: 1,
+                pointBorderWidth: 0,
+                pointHoverBorderWidth: 0,
+                pointRadius: 0
+            })
+            data.datasets.push({
+                label: `Limit Max ${label}`,
+                fill: false,
+                borderColor: 'red',
+                yAxisID: 'y',
+                tension: 0.4,
+                data: dataSiata.datos.map(x => max),
+                borderWidth: 1,
+                pointBorderWidth: 0,
+                pointHoverBorderWidth: 0,
+                pointRadius: 0
+            })
+        }
         return data
     }
 
@@ -181,5 +252,26 @@ export class AppComponent {
     }
     resetChart3(){
         this.chart3.chart.resetZoom();
+    }
+    resetChartAux(){
+        this.chartAux.chart.resetZoom();
+    }
+
+    onShowModal(chart : number){
+        switch(chart){
+            case 0 :
+                this.dataAux.set(this.data)
+                break
+            case 1 :
+                this.dataAux.set(this.data1)
+                break
+            case 2 :
+                this.dataAux.set(this.data2)
+                break
+            case 3 :
+                this.dataAux.set(this.data3)
+                break
+        }
+        this.maximizeChart.set(true)
     }
 }

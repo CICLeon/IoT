@@ -1,37 +1,46 @@
-<div class="w-screen h-screen p-4">
+<div class="w-screen h-screen p-3">
   <router-outlet></router-outlet>
   <div class="w-full flex">
     <div class="w-4 p-2">
       <div class="card shadow-1">
         <div class="flex justify-content-between align-items-center">
-          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart()"/>
-          <h2 class="text-center text-white m-0">Humidity</h2>
-          <h2 class="text-center text-white m-0">92°C</h2>
+          <div>
+            <p-button icon="pi pi-replay" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart()"/>
+            <p-button icon="pi pi-window-maximize" [rounded]="true" [text]="true" styleClass="text-white" (click)="onShowModal(0)"/>
+          </div>
+          <h2 class="text-center text-white m-0">Temperatura</h2>
+          <h2 class="text-center text-white m-0">34°C</h2>
         </div>
         <hr>
-        <p-chart type="line" [data]="data" [options]="options" height="10rem" #chart name="chart" id="chart"/>
+        <p-chart type="line" [data]="data" [options]="options" [height]="heightChart" #chart name="chart" id="chart"/>
       </div>
     </div>
     <div class="w-4 p-2">
       <div class="card shadow-1">
         <div class="flex justify-content-between align-items-center">
-          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart1()"/>
+          <div>
+            <p-button icon="pi pi-replay" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart1()"/>
+            <p-button icon="pi pi-window-maximize" [rounded]="true" [text]="true" styleClass="text-white" (click)="onShowModal(1)"/>
+          </div>
           <h2 class="text-center text-white m-0">Humidity</h2>
-          <h2 class="text-center text-white m-0">92°C</h2>
+          <h2 class="text-center text-white m-0">33%</h2>
         </div>
         <hr>
-        <p-chart type="line" [data]="data1" [options]="options" height="10rem" #chart1 name="chart1" id="chart1"/>
+        <p-chart type="line" [data]="data1" [options]="options" [height]="heightChart" #chart1 name="chart1" id="chart1"/>
       </div>
     </div>
     <div class="w-4 p-2">
       <div class="card shadow-1">
         <div class="flex justify-content-between align-items-center">
-          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart2()"/>
-          <h2 class="text-center text-white m-0">Humidity</h2>
-          <h2 class="text-center text-white m-0">92°C</h2>
+          <div>
+            <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart2()"/>
+            <p-button icon="pi pi-window-maximize" [rounded]="true" [text]="true" styleClass="text-white" (click)="onShowModal(2)"/>
+          </div>
+          <h2 class="text-center text-white m-0">Lighture</h2>
+          <h2 class="text-center text-white m-0">26</h2>
         </div>
         <hr>
-        <p-chart type="line" [data]="data2" [options]="options" height="10rem" #chart2 name="chart2" id="chart2"/>
+        <p-chart type="line" [data]="data2" [options]="options" [height]="heightChart" #chart2 name="chart2" id="chart2"/>
       </div>
     </div>
   </div>
@@ -39,23 +48,57 @@
     <div class="w-4 p-2">
       <div class="card shadow-1">
         <div class="flex justify-content-between align-items-center">
-          <p-button icon="pi pi-replay font-bold" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart3()"/>
-          <h2 class="text-center text-white m-0">Humidity</h2>
-          <h2 class="text-center text-white m-0">92°C</h2>
+          <div>
+            <p-button icon="pi pi-replay" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChart3()"/>
+            <p-button icon="pi pi-window-maximize" [rounded]="true" [text]="true" styleClass="text-white" (click)="onShowModal(3)"/>
+          </div>
+          <h2 class="text-center text-white m-0">Proximity</h2>
+          <h2 class="text-center text-white m-0">18,7</h2>
         </div>
         <hr>
-        <p-chart type="line" [data]="data" [options]="options" height="10rem" #chart3 name="chart3" id="chart3"/>
+        <p-chart type="line" [data]="data3" [options]="options" [height]="heightChart" #chart3 name="chart3" id="chart3"/>
       </div>
     </div>
     <div class="w-8 p-2">
-      <div class="card shadow-1">
-        <div class="flex justify-content-end">
-          <p-button [raised]="true" label="Reset Zoom" (click)="resetChart1()"/>
+      <div class="card shadow-1 overflow-auto">
+        <h2 class="text-white m-0 flex align-items-center justify-content-center" style="height: 47.99px;">Humidity</h2>
+        <hr>
+        <div [style]="'height: '+ heightChart +';'">
+          <p-carousel [value]="products" [numVisible]="4" [numScroll]="1" [circular]="true" [responsiveOptions]="responsiveOptions">
+            <ng-template let-product pTemplate="item">
+                <div class="border-1 surface-border border-round m-2 p-3">
+                    <div class="mb-3">
+                        <div class="relative mx-auto">
+                            <img
+                                src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" 
+                                [alt]="product.name"
+                                class="w-full max-h-full border-round" />
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+          </p-carousel>
         </div>
-        <p-chart type="line" [data]="data1" [options]="options" height="10rem" #chart1 name="chart1" id="chart1"/>
       </div>
     </div>
   </div>
 </div>
 
 <p-toast />
+
+<p-dialog [modal]="true" [(visible)]="maximizeChart" [style]="{ width: '90vw' }" [closable]="false" [resizable]="false">
+  <ng-template pTemplate="header">
+    <div class="w-full flex justify-content-between align-items-center">
+      <h2 class="text-center text-white m-0">92°C</h2>
+      <h2 class="text-center text-white m-0">Humidity</h2>
+      <div>
+        <p-button icon="pi pi-replay" [rounded]="true" [text]="true" styleClass="text-white" (click)="resetChartAux()"/>
+        <p-button icon="pi pi-window-minimize" [rounded]="true" [text]="true" styleClass="text-white" (click)="maximizeChart.set(false)"/>
+      </div>
+    </div>
+  </ng-template>
+  <hr>
+  <p-chart type="line" [data]="dataAux()" [options]="options" #chartAux name="chartAux" id="chartAux"/>
+  <ng-template pTemplate="footer">
+  </ng-template>
+</p-dialog>

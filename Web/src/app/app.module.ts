@@ -8,6 +8,8 @@ import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogModule } from 'primeng/dialog';
+import { CarouselModule } from 'primeng/carousel';
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ButtonModule,
     ToastModule,
     BrowserAnimationsModule,
+    DialogModule,
+    CarouselModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
