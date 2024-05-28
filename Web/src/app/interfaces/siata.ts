@@ -36,3 +36,15 @@ export interface Product {
     image?: string;
     rating?: number;
 }
+
+
+export interface IResource {
+    id?: string;
+    name: string;
+    description: string;
+    contentType: string;
+    fileName: string;
+    fileBase64: string;
+    dateRegister: Date;
+    url: string;
+}

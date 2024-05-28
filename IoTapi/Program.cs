@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
+using Interfaces;
 using IoT;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,7 @@ builder.Services.AddDbContext<Contex>(option => {
 });
 
 // Add Services
+builder.Services.AddScoped<IStoreFiles, StoreFile>();
 builder.Services.AddSignalR();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -57,6 +60,10 @@ app.UseStaticFiles();
 app.UseCors("all");
 
 app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseAuthentication();
 
 #pragma warning disable ASP0014
 app.UseEndpoints(endpoints =>

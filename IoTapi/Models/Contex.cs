@@ -6,6 +6,7 @@ namespace IoT
     {
         public Contex(DbContextOptions<Contex> options) : base(options) { }
         public DbSet<Data> Data { get; set; } = null!;
+        public DbSet<Resource> Resources { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

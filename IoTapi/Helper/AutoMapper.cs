@@ -1,4 +1,5 @@
 using AutoMapper;
+using Dtos;
 
 namespace IoT
 {
@@ -7,6 +8,7 @@ namespace IoT
         public AutoMapperProfile()
         {
             CreateMap<Data, DataDTO>().ReverseMap();
+            CreateMap<Resource, ResourceDTO>().ReverseMap();
         }
     }
 }

@@ -1,0 +1,14 @@
+.max-image{
+    max-width: 160px;
+    max-height: 106.66px;
+}
+
+.carousel-card{
+    transition: all 300ms;
+    position: relative;
+    cursor: pointer;
+}
+
+.carousel-card:hover{
+    transform: scale(1.03);
+}
